@@ -5,6 +5,23 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.app {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  margin-bottom: 16px;
 }
 
 code {
@@ -18,4 +35,18 @@ code {
 
 .isDone {
   opacity: 0.5;
+}
+
+.addForm {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.addForm span {
+  font-size: 12px;
+  font-weight: bold;
+  color: #de0000;
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
 }
