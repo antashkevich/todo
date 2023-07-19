@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import { ChangeEvent, FC, KeyboardEvent, useState } from "react";
 
 type PropsType = {
@@ -30,8 +31,10 @@ export const EditableValue: FC<PropsType> = ({ value, onChange }) => {
   };
 
   return editMode ? (
-    <input
+    <TextField
       type="text"
+      variant="outlined"
+      size="small"
       value={title}
       onChange={onChangeTitle}
       onKeyDown={onChangeTitleKeyboard}

@@ -1,4 +1,6 @@
 import React, { useState, ChangeEvent, KeyboardEvent, FC } from "react";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import { Button, Stack, TextField } from "@mui/material";
 
 type PropsType = {
   addItem: (title: string) => void;
@@ -38,16 +40,28 @@ export const AddItemForm: FC<PropsType> = ({ addItem }) => {
   };
 
   return (
-    <div className="addForm">
-      <input
+    <Stack direction="row" alignItems="center">
+      <TextField
         type="text"
+        label="Todolist name"
+        variant="outlined"
+        size="small"
         value={newTaskTitle}
         onChange={onNewTitleChangeHandler}
         onKeyDown={addTaskOnKeyboard}
         onFocus={onFocus}
+        error={!!errorMessage}
+        helperText={errorMessage}
+        fullWidth
       />
-      <button onClick={addNewTask}>+</button>
-      <span>{errorMessage}</span>
-    </div>
+      <Button
+        className="btn-addTodo"
+        variant="contained"
+        size="large"
+        onClick={addNewTask}
+      >
+        <ControlPointIcon />
+      </Button>
+    </Stack>
   );
 };

@@ -2,6 +2,19 @@ import React, { FC } from "react";
 import { FilterValuesType } from "./App";
 import { AddItemForm } from "./AddItemForm";
 import { EditableValue } from "./EditableValue";
+import {
+  Button,
+  ButtonGroup,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  List,
+  ListItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export type TaskType = {
   id: string;
@@ -34,9 +47,13 @@ export const TodoList: FC<PropsType> = ({
   changeStatus,
   removeTodolist,
   changeTitle,
-  changeTodoTitle
+  changeTodoTitle,
 }) => {
-  const onChangeStatusHandler = (id: string, isDone: boolean, idTodo: string) => {
+  const onChangeStatusHandler = (
+    id: string,
+    isDone: boolean,
+    idTodo: string
+  ) => {
     changeStatus(id, isDone, idTodo);
   };
 
@@ -46,7 +63,7 @@ export const TodoList: FC<PropsType> = ({
   const removeTodo = () => removeTodolist(id);
 
   const addNewTask = (title: string) => {
-    addTask(title, id)
+    addTask(title, id);
   };
 
   const onChangeTodoTitle = (title: string) => {
@@ -55,59 +72,89 @@ export const TodoList: FC<PropsType> = ({
 
   return (
     <div>
-      <h2>
-        <EditableValue
-          value={title}
-          onChange={onChangeTodoTitle}
-         />
-        <button onClick={() => removeTodo()}>X</button>
-      </h2>
+      <Stack
+        className="todotitle"
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Typography variant="h6" noWrap>
+          <EditableValue value={title} onChange={onChangeTodoTitle} />
+        </Typography>
+
+        <IconButton onClick={() => removeTodo()}>
+          <DeleteForeverIcon color="error" />
+        </IconButton>
+      </Stack>
 
       <AddItemForm addItem={addNewTask} />
 
-      <ul>
+      <List sx={{ pt: 2, pb: 2 }} >
         {tasks.map(item => {
           const onEditValue = (title: string) => {
             changeTitle(item.id, title, id);
           };
-    
-          return <li className={item.isDone ? "isDone" : ""} key={item.id}>
-            <label>
-              <input
-                type="checkbox"
-                onChange={() => onChangeStatusHandler(item.id, item.isDone, id)}
-                checked={item.isDone}
-              />
-              <EditableValue 
-                value={item.title}
-                onChange={onEditValue}
-                 />
-            </label>
-            <button onClick={() => removeTask(item.id, id)}>X</button>
-          </li>
-        })}
-      </ul>
 
-      <div>
-        <button
-          className={filter === "all" ? "active" : ""}
+          return (
+            <ListItem className={item.isDone ? "isDone" : ""} sx={{ pt: 0.5, pb: 0.5 }} disableGutters key={item.id}>
+              <Stack
+                justifyContent="space-between"
+                flexGrow="1"
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{ maxWidth: "100%" }}
+              >
+                <FormControl fullWidth>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={() =>
+                          onChangeStatusHandler(item.id, item.isDone, id)
+                        }
+                        checked={item.isDone}
+                      />
+                    }
+                    label={
+                      <Typography variant={"body1"} noWrap>
+                        <EditableValue value={item.title} onChange={onEditValue} />
+                      </Typography>
+                    }
+                  />
+                </FormControl>
+                <IconButton onClick={() => removeTask(item.id, id)}>
+                  <DeleteForeverIcon color="error" />
+                </IconButton>
+              </Stack>
+            </ListItem>
+          );
+        })}
+      </List>
+
+      <ButtonGroup fullWidth>
+        <Button
           onClick={() => onChangeFilter("all", id)}
+          variant={filter === "all" ? "contained" : "outlined"}
+          size="small"
         >
           All
-        </button>
-        <button
-          className={filter === "active" ? "active" : ""}
+        </Button>
+        <Button
           onClick={() => onChangeFilter("active", id)}
+          variant={filter === "active" ? "contained" : "outlined"}
+          size="small"
         >
           Active
-        </button>
-        <button
-          className={filter === "completed" ? "active" : ""}
+        </Button>
+        <Button
           onClick={() => onChangeFilter("completed", id)}
+          variant={filter === "completed" ? "contained" : "outlined"}
+          size="small"
         >
           Completed
-        </button>
-      </div>
+        </Button>
+      </ButtonGroup>
     </div>
   );
 };

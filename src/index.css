@@ -1,27 +1,9 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  box-sizing: border-box;
-  padding: 20px;
-}
-
-.app {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  gap: 32px;
-}
-
 h2 {
-  display: flex;
-  align-items: center;
-  gap: 16px;
   margin: 0;
-  margin-bottom: 16px;
+}
+
+.todotitle {
+  margin-bottom: 24px;
 }
 
 code {
@@ -29,24 +11,14 @@ code {
     monospace;
 }
 
-.active {
-  background-color: aqua;
-}
-
 .isDone {
   opacity: 0.5;
 }
 
-.addForm {
-  position: relative;
-  margin-bottom: 32px;
-}
-
-.addForm span {
-  font-size: 12px;
-  font-weight: bold;
-  color: #de0000;
-  position: absolute;
-  top: calc(100% + 2px);
-  left: 0;
+.btn-addTodo {
+  height: 40px;
+  width: 40px;
+  min-width: initial !important;
+  padding: 0 !important;
+  flex-shrink: 0;
 }
