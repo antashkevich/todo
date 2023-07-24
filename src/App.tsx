@@ -7,13 +7,13 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 export type FilterValuesType = "all" | "active" | "completed";
 
-type TodoListType = {
+export type TodoListType = {
   id: string;
   title: string;
   filter: FilterValuesType;
 };
 
-type TasksType = {
+export type TasksType = {
   [key: string]: TaskType[];
 };
 
@@ -68,8 +68,7 @@ export const App = () => {
 
   const removeTask = (id: string, todoListId: string) => {
     let tasks = tasksObj[todoListId];
-    let filteredTasks = tasks.filter(task => task.id !== id);
-    tasksObj[todoListId] = filteredTasks;
+    tasksObj[todoListId] = tasks.filter(task => task.id !== id);
     setTasksObj({ ...tasksObj });
   };
 
@@ -169,7 +168,7 @@ export const App = () => {
             }
 
             return (
-              <Grid xs={4}>
+              <Grid xs={4} key={todo.id}>
                 <Paper elevation={3}>
                   <Box sx={{p: 3}}>
                     <TodoList
