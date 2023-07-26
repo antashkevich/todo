@@ -1,5 +1,8 @@
-import React, { FC } from "react";
-import { FilterValuesType } from "./App";
+import React, { ChangeEvent, FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppRootState } from "./state/store";
+import { addTaskAC, changeStatusTaskAC, changeTitleTaskAC, removeTaskAC } from "./state/tasks-reducer";
+import { FilterValuesType } from "./AppRedux";
 import { AddItemForm } from "./AddItemForm";
 import { EditableValue } from "./EditableValue";
 import {
@@ -16,6 +19,10 @@ import {
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
+export type TasksType = {
+  [key: string]: TaskType[];
+};
+
 export type TaskType = {
   id: string;
   title: string;
@@ -25,50 +32,46 @@ export type TaskType = {
 type PropsType = {
   id: string;
   title: string;
-  tasks: Array<TaskType>;
   filter: FilterValuesType;
-  removeTask: (id: string, todoListId: string) => void;
-  changeFilter: (value: FilterValuesType, todoListId: string) => void;
-  addTask: (title: string, todoListId: string) => void;
-  changeStatus: (id: string, isDone: boolean, todoListId: string) => void;
+  changeFilter: (todoListId: string, value: FilterValuesType) => void;
   removeTodolist: (todoListId: string) => void;
-  changeTitle: (id: string, title: string, todoListId: string) => void;
-  changeTodoTitle: (title: string, todoListId: string) => void;
+  changeTodoTitle: (todoListId: string, title: string) => void;
 };
 
 export const TodoList: FC<PropsType> = ({
   id,
   title,
-  tasks,
   filter,
-  removeTask,
   changeFilter,
-  addTask,
-  changeStatus,
   removeTodolist,
-  changeTitle,
   changeTodoTitle,
 }) => {
-  const onChangeStatusHandler = (
-    id: string,
-    isDone: boolean,
-    idTodo: string
-  ) => {
-    changeStatus(id, isDone, idTodo);
-  };
+  const dispatch = useDispatch()
+
+  const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[id])
 
   const onChangeFilter = (value: FilterValuesType, id: string) =>
-    changeFilter(value, id);
+    changeFilter(id, value);
 
   const removeTodo = () => removeTodolist(id);
 
-  const addNewTask = (title: string) => {
-    addTask(title, id);
+  const onChangeTodoTitle = (title: string) => {
+    changeTodoTitle(id, title);
   };
 
-  const onChangeTodoTitle = (title: string) => {
-    changeTodoTitle(title, id);
-  };
+  let taskForTodolist = tasks;
+
+  if (filter === "active") {
+    taskForTodolist = taskForTodolist.filter(
+      task => task.isDone === false
+    );
+  }
+
+  if (filter === "completed") {
+    taskForTodolist = taskForTodolist.filter(
+      task => task.isDone === true
+    );
+  }
 
   return (
     <div>
@@ -88,12 +91,17 @@ export const TodoList: FC<PropsType> = ({
         </IconButton>
       </Stack>
 
-      <AddItemForm addItem={addNewTask} />
+      <AddItemForm addItem={(title: string) => dispatch(addTaskAC(id, title))} />
 
       <List sx={{ pt: 2, pb: 2 }} >
-        {tasks.map(item => {
+        {taskForTodolist.map(item => {
           const onEditValue = (title: string) => {
-            changeTitle(item.id, title, id);
+            dispatch(changeTitleTaskAC(id, item.id, title));
+          };
+
+          const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+            const newisDoneValue = e.currentTarget.checked;
+            dispatch(changeStatusTaskAC(id, item.id, newisDoneValue))
           };
 
           return (
@@ -110,9 +118,7 @@ export const TodoList: FC<PropsType> = ({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={() =>
-                          onChangeStatusHandler(item.id, item.isDone, id)
-                        }
+                        onChange={onChangeStatusHandler}
                         checked={item.isDone}
                       />
                     }
@@ -123,7 +129,7 @@ export const TodoList: FC<PropsType> = ({
                     }
                   />
                 </FormControl>
-                <IconButton onClick={() => removeTask(item.id, id)}>
+                <IconButton onClick={() => dispatch(removeTaskAC(id, item.id))}>
                   <DeleteForeverIcon color="error" />
                 </IconButton>
               </Stack>
