@@ -36,7 +36,7 @@ type ActionsType =
   | AddTodolistActionType
   | RemoveTodolistActionType;
 
-  const initialState: TasksType = {};
+const initialState: TasksType = {};
 
 export const tasksReducer = (
   state: TasksType = initialState,
@@ -72,10 +72,7 @@ export const tasksReducer = (
     case "CHANGE-TITLE-TASK": {
       const stateCopy = { ...state };
       let tasks = stateCopy[action.todoListId];
-      const task = tasks.find(task => task.id === action.taskId);
-      if (task) {
-        task.title = action.title;
-      }
+      stateCopy[action.todoListId] = tasks.map(task => task.id === action.taskId ? {...task, title: action.title} : task)
       return stateCopy;
     }
     case "ADD-TODOLIST": {

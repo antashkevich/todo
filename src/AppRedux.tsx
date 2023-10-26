@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { TodoList } from "./Todolist";
 import { AddItemForm } from "./AddItemForm";
 import { Box, Container, Paper } from "@mui/material";
@@ -20,23 +20,23 @@ export const AppRedux = () => {
 
   const totdoLists = useSelector<AppRootState, TodoListType[]>(state => state.todolists)
 
-  const changeFilter = (todoListId: string, value: FilterValuesType) => {
+  const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
     dispatch(сhangeTodolistFilterAC(todoListId, value));
-  };
+  }, [dispatch]);
 
-  const removeTodolist = (id: string) => {
+  const removeTodolist = useCallback((id: string) => {
     const action = removeTodolistAC(id);
     dispatch(action);
-  };
+  }, [dispatch]);
 
-  const addTodolist = (title: string) => {
+  const addTodolist = useCallback((title: string) => {
     const action = addTodolistAC(title);
     dispatch(action);
-  };
+  }, [dispatch]);
 
-  const changeTodoTitle = (todoListId: string, newTitleValue: string) => {
+  const changeTodoTitle = useCallback((todoListId: string, newTitleValue: string) => {
     dispatch(сhangeTodolistTitleAC(todoListId, newTitleValue));
-  };
+  }, [dispatch]);
 
   return (
     <Container fixed sx={{ p: 4 }}>

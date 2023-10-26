@@ -6,7 +6,7 @@ type PropsType = {
   addItem: (title: string) => void;
 };
 
-export const AddItemForm: FC<PropsType> = ({ addItem }) => {
+export const AddItemForm: FC<PropsType> = React.memo(({ addItem }) => {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
@@ -64,4 +64,4 @@ export const AddItemForm: FC<PropsType> = ({ addItem }) => {
       </Button>
     </Stack>
   );
-};
+});

@@ -22,3 +22,8 @@ code {
   padding: 0 !important;
   flex-shrink: 0;
 }
+
+.Mui-error {
+  position: absolute;
+  top: calc(100% - 4px);
+}

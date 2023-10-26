@@ -1,23 +1,17 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { ChangeEvent, FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootState } from "./state/store";
-import { addTaskAC, changeStatusTaskAC, changeTitleTaskAC, removeTaskAC } from "./state/tasks-reducer";
+import { addTaskAC, changeStatusTaskAC, changeTitleTaskAC } from "./state/tasks-reducer";
 import { FilterValuesType } from "./AppRedux";
 import { AddItemForm } from "./AddItemForm";
-import { EditableValue } from "./EditableValue";
+import { TaskItem } from "./TaskItem";
+import { TodolistTitle } from "./TodolistTitle";
 import {
   Button,
   ButtonGroup,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  IconButton,
   List,
-  ListItem,
-  Stack,
-  Typography,
+  ListItem
 } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export type TasksType = {
   [key: string]: TaskType[];
@@ -38,7 +32,7 @@ type PropsType = {
   changeTodoTitle: (todoListId: string, title: string) => void;
 };
 
-export const TodoList: FC<PropsType> = ({
+export const TodoList: FC<PropsType> = React.memo(({
   id,
   title,
   filter,
@@ -50,14 +44,10 @@ export const TodoList: FC<PropsType> = ({
 
   const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[id])
 
+  const addTask = useCallback((title: string) => dispatch(addTaskAC(id, title)), [dispatch, id])
+
   const onChangeFilter = (value: FilterValuesType, id: string) =>
     changeFilter(id, value);
-
-  const removeTodo = () => removeTodolist(id);
-
-  const onChangeTodoTitle = (title: string) => {
-    changeTodoTitle(id, title);
-  };
 
   let taskForTodolist = tasks;
 
@@ -75,64 +65,25 @@ export const TodoList: FC<PropsType> = ({
 
   return (
     <div>
-      <Stack
-        className="todotitle"
-        direction="row"
-        spacing={1}
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Typography variant="h6" noWrap>
-          <EditableValue value={title} onChange={onChangeTodoTitle} />
-        </Typography>
+      <TodolistTitle
+        id={id}
+        value={title}
+        onChangeTodoTitle={changeTodoTitle}
+        removeTodo={removeTodolist}
+      />
 
-        <IconButton onClick={() => removeTodo()}>
-          <DeleteForeverIcon color="error" />
-        </IconButton>
-      </Stack>
-
-      <AddItemForm addItem={(title: string) => dispatch(addTaskAC(id, title))} />
+      <AddItemForm addItem={addTask} />
 
       <List sx={{ pt: 2, pb: 2 }} >
         {taskForTodolist.map(item => {
-          const onEditValue = (title: string) => {
-            dispatch(changeTitleTaskAC(id, item.id, title));
-          };
-
-          const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            const newisDoneValue = e.currentTarget.checked;
-            dispatch(changeStatusTaskAC(id, item.id, newisDoneValue))
-          };
-
           return (
-            <ListItem className={item.isDone ? "isDone" : ""} sx={{ pt: 0.5, pb: 0.5 }} disableGutters key={item.id}>
-              <Stack
-                justifyContent="space-between"
-                flexGrow="1"
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                sx={{ maxWidth: "100%" }}
-              >
-                <FormControl fullWidth>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={onChangeStatusHandler}
-                        checked={item.isDone}
-                      />
-                    }
-                    label={
-                      <Typography variant={"body1"} noWrap>
-                        <EditableValue value={item.title} onChange={onEditValue} />
-                      </Typography>
-                    }
-                  />
-                </FormControl>
-                <IconButton onClick={() => dispatch(removeTaskAC(id, item.id))}>
-                  <DeleteForeverIcon color="error" />
-                </IconButton>
-              </Stack>
+            <ListItem sx={{ pt: 0.5, pb: 0.5 }} disableGutters key={item.id}>
+              <TaskItem
+                id={id}
+                itemId={item.id}
+                isChecked={item.isDone}
+                value={item.title}
+              />
             </ListItem>
           );
         })}
@@ -163,4 +114,4 @@ export const TodoList: FC<PropsType> = ({
       </ButtonGroup>
     </div>
   );
-};
+});
