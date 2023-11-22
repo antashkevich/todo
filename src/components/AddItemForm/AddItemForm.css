@@ -1,0 +1,29 @@
+.addItemForm .addItemForm-input .MuiInputBase-fullWidth {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.addItemForm .Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
+  border-width: 1px;
+}
+
+
+.addItemForm .addItemForm-input p.Mui-error {
+  position: absolute;
+  top: calc(100% - 4px);
+}
+
+.addItemForm .addItemForm-btn {
+  height: 40px;
+  width: 40px;
+  min-width: initial;
+  padding: 0;
+  flex-shrink: 0;
+  box-shadow: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.addItemForm .addItemForm-btn:hover {
+  box-shadow: none;
+}

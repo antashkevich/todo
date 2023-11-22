@@ -14,16 +14,3 @@ code {
 .isDone {
   opacity: 0.5;
 }
-
-.btn-addTodo {
-  height: 40px;
-  width: 40px;
-  min-width: initial !important;
-  padding: 0 !important;
-  flex-shrink: 0;
-}
-
-.Mui-error {
-  position: absolute;
-  top: calc(100% - 4px);
-}

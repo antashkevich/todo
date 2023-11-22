@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { TodoList } from "./Todolist";
-import { AddItemForm } from "./AddItemForm";
+import { TodoList } from "./components/Todolist";
+import { AddItemForm } from "./components/AddItemForm";
 import { Box, Container, Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { addTodolistAC, removeTodolistAC, сhangeTodolistFilterAC, сhangeTodolistTitleAC } from "./state/todolists-reducer";
@@ -38,34 +38,32 @@ export const AppRedux = () => {
     dispatch(сhangeTodolistTitleAC(todoListId, newTitleValue));
   }, [dispatch]);
 
-  return (
-    <Container fixed sx={{ p: 4 }}>
-      <Grid container spacing={4}>
-        <Grid container justifyContent="center" xs={12}>
-          <AddItemForm addItem={addTodolist} />
-        </Grid>
-        <Grid container rowSpacing={4} columnSpacing={4} xs={12}>
-          {totdoLists.map(todo => {
-            return (
-              <Grid xs={4} key={todo.id}>
-                <Paper elevation={3}>
-                  <Box sx={{ p: 3 }}>
-                    <TodoList
-                      key={todo.id}
-                      id={todo.id}
-                      title={todo.title}
-                      changeFilter={changeFilter}
-                      removeTodolist={removeTodolist}
-                      filter={todo.filter}
-                      changeTodoTitle={changeTodoTitle}
-                    />
-                  </Box>
-                </Paper>
-              </Grid>
-            );
-          })}
-        </Grid>
+  return <Container fixed sx={{ p: 4 }}>
+    <Grid container spacing={4}>
+      <Grid container justifyContent="center" xs={12}>
+        <AddItemForm addItem={addTodolist} />
       </Grid>
-    </Container>
-  );
+      <Grid container rowSpacing={4} columnSpacing={4} xs={12}>
+        {totdoLists.map(todo => {
+          return (
+            <Grid xs={4} key={todo.id}>
+              <Paper elevation={3}>
+                <Box sx={{ p: 3 }}>
+                  <TodoList
+                    key={todo.id}
+                    id={todo.id}
+                    title={todo.title}
+                    changeFilter={changeFilter}
+                    removeTodolist={removeTodolist}
+                    filter={todo.filter}
+                    changeTodoTitle={changeTodoTitle}
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Grid>
+  </Container>;
 };

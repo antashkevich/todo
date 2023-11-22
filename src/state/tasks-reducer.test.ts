@@ -1,4 +1,4 @@
-import { TasksType } from "../Todolist";
+import { TasksType } from "../components/Todolist/Todolist";
 import {
   addTaskAC,
   changeTitleTaskAC,
