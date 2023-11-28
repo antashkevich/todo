@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, FC, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeStatusTaskAC, changeTitleTaskAC, removeTaskAC } from "../../state/tasks-reducer";
 import { EditableValue } from "../EditableValue";
@@ -22,9 +22,9 @@ export const TaskItem: FC<PropsType> = React.memo(({ id, itemId, isChecked, valu
 
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const onEditValue = (title: string) => {
+  const onEditValue = useCallback((title: string) => {
     dispatch(changeTitleTaskAC(id, itemId, title));
-  };
+  }, [id, itemId, dispatch]);
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const newisDoneValue = e.currentTarget.checked;

@@ -5,10 +5,11 @@ import { AddItemForm } from './AddItemForm';
 const meta: Meta<typeof AddItemForm> = {
   title: 'TODOLISTS/AddItemForm',
   component: AddItemForm,
+  tags: ['autodocs'],
   argTypes: {
     addItem: {
-        description: 'Button clicked inside form',
-        action: 'clicked'
+      description: 'Button clicked inside form',
+      action: 'clicked'
     }
   }
 }

@@ -7,6 +7,7 @@ import React, {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 import "./EditableValue.css";
 
@@ -21,9 +22,12 @@ type PropsType = {
 export const EditableValue: FC<PropsType> = React.memo(({ value, isChecked, isEditMode, onChange, setIsEditMode }) => {
   const [title, setTitle] = useState(value);
 
-  if (!isEditMode) {
-    onChange(title);
-  }
+
+  useEffect(() => {
+    if (!isEditMode) {
+      onChange(title);
+    }
+  }, [isEditMode, title, onChange]);
 
   const activateViewMode = (e: FocusEvent<HTMLElement>) => {
     if (e.relatedTarget === null) {

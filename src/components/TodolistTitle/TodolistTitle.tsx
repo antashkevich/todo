@@ -1,14 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { EditableValue } from "../EditableValue";
-import {
-  Stack,
-  Typography,
-  ButtonGroup,
-  IconButton
-} from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import { Stack } from "@mui/material";
 import { EditionButtons } from "../EditionButtons";
 
 type PropsType = {
@@ -20,9 +12,10 @@ type PropsType = {
 
 export const TodolistTitle: FC<PropsType> = React.memo(({ id, value, onChangeTodoTitle, removeTodo }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const onChangeTitle = (value: string) => {
+
+  const onChangeTitle = useCallback((value: string) => {
     onChangeTodoTitle(id, value);
-  };
+  }, [id, onChangeTodoTitle]);
 
   const onChangeEditMode = () => {
     setIsEditMode(!isEditMode);

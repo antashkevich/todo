@@ -74,7 +74,7 @@ export const TodoList: FC<PropsType> = React.memo(({
     <AddItemForm addItem={addTask} />
 
     <List sx={{ pt: 2, pb: 2 }} >
-      {taskForTodolist.map(item => {
+      {taskForTodolist?.map(item => {
         return (
           <ListItem sx={{ pt: 0.5, pb: 0.5 }} disableGutters key={item.id}>
             <TaskItem

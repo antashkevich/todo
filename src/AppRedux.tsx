@@ -44,7 +44,7 @@ export const AppRedux = () => {
         <AddItemForm addItem={addTodolist} />
       </Grid>
       <Grid container rowSpacing={4} columnSpacing={4} xs={12}>
-        {totdoLists.map(todo => {
+        {totdoLists?.map(todo => {
           return (
             <Grid xs={4} key={todo.id}>
               <Paper elevation={3}>
