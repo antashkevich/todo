@@ -2,7 +2,6 @@ import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootState } from "../../state/store";
 import { addTaskAC } from "../../state/tasks-reducer";
-import { FilterValuesType } from "../../AppRedux";
 import { AddItemForm } from "../AddItemForm";
 import { TaskItem } from "../TaskItem";
 import { TodolistTitle } from "../TodolistTitle";
@@ -12,16 +11,8 @@ import {
   List,
   ListItem
 } from "@mui/material";
-
-export type TasksType = {
-  [key: string]: TaskType[];
-};
-
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
+import { TaskType } from "../../api/ todolist-api";
+import { FilterValuesType } from "../../state/todolists-reducer";
 
 type PropsType = {
   id: string;
@@ -53,13 +44,13 @@ export const TodoList: FC<PropsType> = React.memo(({
 
   if (filter === "active") {
     taskForTodolist = taskForTodolist.filter(
-      task => task.isDone === false
+      task => task.status === 1
     );
   }
 
   if (filter === "completed") {
     taskForTodolist = taskForTodolist.filter(
-      task => task.isDone === true
+      task => task.status === 2
     );
   }
 
@@ -80,7 +71,7 @@ export const TodoList: FC<PropsType> = React.memo(({
             <TaskItem
               id={id}
               itemId={item.id}
-              isChecked={item.isDone}
+              isChecked={item.status === 2}
               value={item.title}
             />
           </ListItem>

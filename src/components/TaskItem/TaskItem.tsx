@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   Stack,
 } from "@mui/material";
+import { TaskStatuses } from "../../api/ todolist-api";
 
 type PropsType = {
   id: string;
@@ -27,8 +28,8 @@ export const TaskItem: FC<PropsType> = React.memo(({ id, itemId, isChecked, valu
   }, [id, itemId, dispatch]);
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const newisDoneValue = e.currentTarget.checked;
-    dispatch(changeStatusTaskAC(id, itemId, newisDoneValue))
+    const isStatusValue = e.currentTarget.checked;
+    dispatch(changeStatusTaskAC(id, itemId, isStatusValue ? TaskStatuses.Completed : TaskStatuses.inProgress))
   };
 
   const onChangeEditMode = () => {

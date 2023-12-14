@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { FilterValuesType, TodoListType } from "../AppRedux";
+import { TodoListType } from "../api/ todolist-api";
 
 export type AddTodolistActionType = {
   type: "ADD-TODOLIST";
@@ -30,12 +30,18 @@ type ActionsType =
   | ChangeTodolistTitleActionType
   | ChangeTodolistFilterActionType;
 
-const initialState: TodoListType[] = []
+const initialState: TodoListDomainType[] = []
+
+export type FilterValuesType = "all" | "active" | "completed";
+
+export type TodoListDomainType = TodoListType & {
+  filter: FilterValuesType
+}
 
 export const todolistsReducer = (
-  state: TodoListType[] = initialState,
+  state: TodoListDomainType[] = initialState,
   action: ActionsType
-): TodoListType[] => {
+): TodoListDomainType[] => {
   switch (action.type) {
     case "ADD-TODOLIST": {
       return [
@@ -43,6 +49,8 @@ export const todolistsReducer = (
           id: action.id,
           title: action.title,
           filter: "all",
+          addedDate: "",
+          order: 0
         },
         ...state
       ];

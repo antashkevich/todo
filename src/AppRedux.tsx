@@ -3,22 +3,14 @@ import { TodoList } from "./components/Todolist";
 import { AddItemForm } from "./components/AddItemForm";
 import { Box, Container, Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { addTodolistAC, removeTodolistAC, сhangeTodolistFilterAC, сhangeTodolistTitleAC } from "./state/todolists-reducer";
+import { FilterValuesType, TodoListDomainType, addTodolistAC, removeTodolistAC, сhangeTodolistFilterAC, сhangeTodolistTitleAC } from "./state/todolists-reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { AppRootState } from "./state/store";
-
-export type FilterValuesType = "all" | "active" | "completed";
-
-export type TodoListType = {
-  id: string;
-  title: string;
-  filter: FilterValuesType;
-};
 
 export const AppRedux = () => {
   const dispatch = useDispatch()
 
-  const totdoLists = useSelector<AppRootState, TodoListType[]>(state => state.todolists)
+  const totdoLists = useSelector<AppRootState, TodoListDomainType[]>(state => state.todolists)
 
   const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
     dispatch(сhangeTodolistFilterAC(todoListId, value));
