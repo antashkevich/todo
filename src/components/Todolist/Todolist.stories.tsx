@@ -1,11 +1,11 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {action} from '@storybook/addon-actions'
-import { TodoList } from './Todolist';
+import { Todolist } from './Todolist';
 import { ReduxStoreProviderDecorator } from '../../stories/decorators/ReduxStoreProviderDecorator';
 
-const meta: Meta<typeof TodoList> = {
+const meta: Meta<typeof Todolist> = {
   title: 'TODOLISTS/Todolist',
-  component: TodoList,
+  component: Todolist,
   tags: ['autodocs'],
   decorators: [ReduxStoreProviderDecorator],
   args: {
@@ -19,7 +19,7 @@ const meta: Meta<typeof TodoList> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof TodoList>;
+type Story = StoryObj<typeof Todolist>;
 
 export const TaskIsNotDoneStory: Story = {};
 

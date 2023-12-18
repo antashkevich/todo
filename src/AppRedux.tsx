@@ -1,39 +1,41 @@
-import React, { useCallback } from "react";
-import { TodoList } from "./components/Todolist";
+import React, { useCallback, useEffect } from "react";
+import { Todolist } from "./components/Todolist";
 import { AddItemForm } from "./components/AddItemForm";
 import { Box, Container, Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { FilterValuesType, TodoListDomainType, addTodolistAC, removeTodolistAC, сhangeTodolistFilterAC, сhangeTodolistTitleAC } from "./state/todolists-reducer";
+import { FilterValuesType, TodolistDomainType, addTodolist, fetchTodolists, removeTodolist, сhangeTodolistFilterAC, сhangeTodolistTitle } from "./state/todolists-reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { AppRootState } from "./state/store";
 
 export const AppRedux = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<any>()
 
-  const totdoLists = useSelector<AppRootState, TodoListDomainType[]>(state => state.todolists)
+  useEffect(() => {
+    dispatch(fetchTodolists())
+  }, [])
+
+  const totdoLists = useSelector<AppRootState, TodolistDomainType[]>(state => state.todolists)
 
   const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
     dispatch(сhangeTodolistFilterAC(todoListId, value));
   }, [dispatch]);
 
-  const removeTodolist = useCallback((id: string) => {
-    const action = removeTodolistAC(id);
-    dispatch(action);
-  }, [dispatch]);
+  const deleteTodolist = useCallback((id: string) => {
+    dispatch(removeTodolist(id))
+  }, [dispatch])
 
-  const addTodolist = useCallback((title: string) => {
-    const action = addTodolistAC(title);
-    dispatch(action);
-  }, [dispatch]);
+  const addNewTodolist = useCallback((title: string) => {
+    dispatch(addTodolist(title))
+  }, [dispatch])
 
-  const changeTodoTitle = useCallback((todoListId: string, newTitleValue: string) => {
-    dispatch(сhangeTodolistTitleAC(todoListId, newTitleValue));
+  const changeTodoListTitle = useCallback((todoListId: string, newTitleValue: string) => {
+    dispatch(сhangeTodolistTitle(todoListId, newTitleValue));
   }, [dispatch]);
 
   return <Container fixed sx={{ p: 4 }}>
     <Grid container spacing={4}>
       <Grid container justifyContent="center" xs={12}>
-        <AddItemForm addItem={addTodolist} />
+        <AddItemForm addNewItem={addNewTodolist} />
       </Grid>
       <Grid container rowSpacing={4} columnSpacing={4} xs={12}>
         {totdoLists?.map(todo => {
@@ -41,14 +43,14 @@ export const AppRedux = () => {
             <Grid xs={4} key={todo.id}>
               <Paper elevation={3}>
                 <Box sx={{ p: 3 }}>
-                  <TodoList
+                  <Todolist
                     key={todo.id}
                     id={todo.id}
                     title={todo.title}
                     changeFilter={changeFilter}
-                    removeTodolist={removeTodolist}
+                    removeTodolist={deleteTodolist}
                     filter={todo.filter}
-                    changeTodoTitle={changeTodoTitle}
+                    changeTodoTitle={changeTodoListTitle}
                   />
                 </Box>
               </Paper>

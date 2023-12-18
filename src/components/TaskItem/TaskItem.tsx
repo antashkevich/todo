@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeStatusTaskAC, changeTitleTaskAC, removeTaskAC } from "../../state/tasks-reducer";
+import { removeTask, updateTask } from "../../state/tasks-reducer";
 import { EditableValue } from "../EditableValue";
 import { EditionButtons } from "../EditionButtons";
 import {
@@ -9,27 +9,31 @@ import {
   FormControlLabel,
   Stack,
 } from "@mui/material";
-import { TaskStatuses } from "../../api/ todolist-api";
+import { TaskStatuses } from "../../api/todolist-api";
 
 type PropsType = {
   id: string;
   itemId: string;
-  isChecked: boolean;
+  isChecked: number;
   value: string;
 };
 
 export const TaskItem: FC<PropsType> = React.memo(({ id, itemId, isChecked, value }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<any>()
 
+  const deleteTask = useCallback((idTodolist: string, idItem: string) => {
+    dispatch(removeTask(idTodolist, idItem))
+  }, [])
+  
   const [isEditMode, setIsEditMode] = useState(false);
 
   const onEditValue = useCallback((title: string) => {
-    dispatch(changeTitleTaskAC(id, itemId, title));
+    dispatch(updateTask(id, itemId, {title}));
   }, [id, itemId, dispatch]);
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const isStatusValue = e.currentTarget.checked;
-    dispatch(changeStatusTaskAC(id, itemId, isStatusValue ? TaskStatuses.Completed : TaskStatuses.inProgress))
+    dispatch(updateTask(id, itemId, { status: isStatusValue ? TaskStatuses.Completed : TaskStatuses.inProgress }))
   };
 
   const onChangeEditMode = () => {
@@ -50,7 +54,7 @@ export const TaskItem: FC<PropsType> = React.memo(({ id, itemId, isChecked, valu
         control={
           <Checkbox
             onChange={onChangeStatusHandler}
-            checked={isChecked}
+            checked={isChecked === 2 ? true : false}
             className={isChecked ? "isDone" : ""}
           />
         }
@@ -58,7 +62,7 @@ export const TaskItem: FC<PropsType> = React.memo(({ id, itemId, isChecked, valu
           <EditableValue
             value={value}
             isEditMode={isEditMode}
-            isChecked={isChecked}
+            isChecked={isChecked === 2 ? true : false}
             onChange={onEditValue}
             setIsEditMode={setIsEditMode} />
         }
@@ -67,9 +71,10 @@ export const TaskItem: FC<PropsType> = React.memo(({ id, itemId, isChecked, valu
 
     <EditionButtons
       id={id}
+      itemId={itemId}
       isEditMode={isEditMode}
-      isChecked={isChecked}
-      removeItem={() => dispatch(removeTaskAC(id, itemId))}
+      isChecked={isChecked === 2 ? true : false}
+      removeItem={() => deleteTask(id, itemId)}
       onChangeEditMode={onChangeEditMode} />
   </Stack>;
 });

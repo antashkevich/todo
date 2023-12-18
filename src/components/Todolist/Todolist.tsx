@@ -1,7 +1,7 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootState } from "../../state/store";
-import { addTaskAC } from "../../state/tasks-reducer";
+import { addTask, fetchTasks } from "../../state/tasks-reducer";
 import { AddItemForm } from "../AddItemForm";
 import { TaskItem } from "../TaskItem";
 import { TodolistTitle } from "../TodolistTitle";
@@ -11,7 +11,7 @@ import {
   List,
   ListItem
 } from "@mui/material";
-import { TaskType } from "../../api/ todolist-api";
+import { TaskType } from "../../api/todolist-api";
 import { FilterValuesType } from "../../state/todolists-reducer";
 
 type PropsType = {
@@ -23,7 +23,7 @@ type PropsType = {
   changeTodoTitle: (todoListId: string, title: string) => void;
 };
 
-export const TodoList: FC<PropsType> = React.memo(({
+export const Todolist: FC<PropsType> = React.memo(({
   id,
   title,
   filter,
@@ -31,11 +31,18 @@ export const TodoList: FC<PropsType> = React.memo(({
   removeTodolist,
   changeTodoTitle,
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<any>()
+
+  useEffect(() => {
+    dispatch(fetchTasks(id))
+  }, [])
 
   const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[id])
 
-  const addTask = useCallback((title: string) => dispatch(addTaskAC(id, title)), [dispatch, id])
+  const addNewTask = useCallback((newTitle: string) => {
+    dispatch(addTask(newTitle, id))
+  }, [dispatch, id])
+
 
   const onChangeFilter = (value: FilterValuesType, id: string) =>
     changeFilter(id, value);
@@ -44,7 +51,7 @@ export const TodoList: FC<PropsType> = React.memo(({
 
   if (filter === "active") {
     taskForTodolist = taskForTodolist.filter(
-      task => task.status === 1
+      task => task.status === 0
     );
   }
 
@@ -62,21 +69,17 @@ export const TodoList: FC<PropsType> = React.memo(({
       removeTodo={removeTodolist}
     />
 
-    <AddItemForm addItem={addTask} />
+    <AddItemForm addNewItem={addNewTask} />
 
     <List sx={{ pt: 2, pb: 2 }} >
-      {taskForTodolist?.map(item => {
-        return (
-          <ListItem sx={{ pt: 0.5, pb: 0.5 }} disableGutters key={item.id}>
-            <TaskItem
-              id={id}
-              itemId={item.id}
-              isChecked={item.status === 2}
-              value={item.title}
-            />
-          </ListItem>
-        );
-      })}
+      {taskForTodolist?.map(item => <ListItem sx={{ pt: 0.5, pb: 0.5 }} disableGutters key={item.id}>
+        <TaskItem
+          id={id}
+          itemId={item.id}
+          isChecked={item.status}
+          value={item.title}
+        />
+      </ListItem>)}
     </List>
 
     <ButtonGroup fullWidth>

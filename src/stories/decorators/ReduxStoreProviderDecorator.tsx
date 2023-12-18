@@ -5,23 +5,23 @@ import { v1 } from "uuid";
 import { AppRootState } from "../../state/store";
 import { todolistsReducer } from "../../state/todolists-reducer";
 import { tasksReducer } from "../../state/tasks-reducer";
-import { TaskPriorities, TaskStatuses } from "../../api/ todolist-api";
+import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   todolists: todolistsReducer,
 });
 
-const todolistId1 = v1();
-const todolistId2 = v1();
+const todoListId1 = v1();
+const todoListId2 = v1();
 
 const initialGlobalState: AppRootState = {
   todolists: [
-    { id: todolistId1, title: "What to learn", filter: "all", addedDate: "", order: 0 },
-    { id: todolistId2, title: "What to buy", filter: "all", addedDate: "", order: 0 }
+    { id: todoListId1, title: "What to learn", filter: "all", addedDate: "", order: 0 },
+    { id: todoListId2, title: "What to buy", filter: "all", addedDate: "", order: 0 }
   ],
   tasks: {
-    "todolistId1": [
+    "todoListId1": [
       {   
         description: '',
         title: "HTML&CSS",
@@ -30,7 +30,7 @@ const initialGlobalState: AppRootState = {
         startDate: '',
         deadline: '',
         id: v1(),
-        todoListId: todolistId1,
+        todoListId: todoListId1,
         order: 0,
         addedDate: ''
       },
@@ -42,12 +42,12 @@ const initialGlobalState: AppRootState = {
         startDate: '',
         deadline: '',
         id: v1(),
-        todoListId: todolistId1,
+        todoListId: todoListId1,
         order: 0,
         addedDate: ''
       },
     ],
-    "todolistId2": [
+    "todoListId2": [
       {
         description: '',
         title: "React",
@@ -56,7 +56,7 @@ const initialGlobalState: AppRootState = {
         startDate: '',
         deadline: '',
         id: v1(),
-        todoListId: todolistId2,
+        todoListId: todoListId2,
         order: 0,
         addedDate: ''
       },
@@ -68,7 +68,7 @@ const initialGlobalState: AppRootState = {
         startDate: '',
         deadline: '',
         id: v1(),
-        todoListId: todolistId2,
+        todoListId: todoListId2,
         order: 0,
         addedDate: ''
       },

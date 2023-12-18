@@ -4,15 +4,15 @@ import { Button, Stack, TextField } from "@mui/material";
 import './AddItemForm.css';
 
 type PropsType = {
-  addItem: (title: string) => void;
+  addNewItem: (title: string) => void;
 };
 
-export const AddItemForm: FC<PropsType> = React.memo(({ addItem }) => {
-  const [newTaskTitle, setNewTaskTitle] = useState("");
+export const AddItemForm: FC<PropsType> = React.memo(({ addNewItem }) => {
+  const [newTitle, setNewTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value);
+    setNewTitle(e.currentTarget.value);
     setErrorMessage(null);
   };
 
@@ -21,19 +21,19 @@ export const AddItemForm: FC<PropsType> = React.memo(({ addItem }) => {
   };
 
   const addTaskOnKeyboard = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (newTaskTitle.trim() === "") {
+    if (newTitle.trim() === "") {
       return setErrorMessage("Title is required!");
     }
     if (e.key === "Enter") {
-      addItem(newTaskTitle);
-      setNewTaskTitle("");
+      addNewItem(newTitle);
+      setNewTitle("");
     }
   };
 
   const addNewTask = () => {
-    if (newTaskTitle.trim() !== "") {
-      addItem(newTaskTitle.trim());
-      setNewTaskTitle("");
+    if (newTitle.trim() !== "") {
+      addNewItem(newTitle.trim());
+      setNewTitle("");
       return;
     }
 
@@ -47,7 +47,7 @@ export const AddItemForm: FC<PropsType> = React.memo(({ addItem }) => {
       label="Todolist name"
       variant="outlined"
       size="small"
-      value={newTaskTitle}
+      value={newTitle}
       onChange={onNewTitleChangeHandler}
       onKeyDown={addTaskOnKeyboard}
       onFocus={onFocus}

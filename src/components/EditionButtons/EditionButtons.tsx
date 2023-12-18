@@ -9,13 +9,14 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 
 type PropsType = {
   id: string;
+  itemId?: string,
   isChecked?: boolean;
   isEditMode: boolean;
   onChangeEditMode: () => void;
-  removeItem: (id: string) => void;
+  removeItem: (id: string, itemId: string | undefined) => void;
 };
 
-export const EditionButtons: FC<PropsType> = React.memo(({ id, isChecked, isEditMode, removeItem, onChangeEditMode }) => {
+export const EditionButtons: FC<PropsType> = React.memo(({ id, itemId, isChecked, isEditMode, removeItem, onChangeEditMode }) => {
   return <ButtonGroup>
     <IconButton onClick={onChangeEditMode} disabled={isChecked}>
       {isEditMode ? 
@@ -24,7 +25,7 @@ export const EditionButtons: FC<PropsType> = React.memo(({ id, isChecked, isEdit
         <ModeEditIcon color={isChecked ? "inherit" : "primary"} />
       }
     </IconButton>
-    <IconButton onClick={() => removeItem(id)}>
+    <IconButton onClick={() => removeItem(id, itemId)}>
       <DeleteForeverIcon color="error" />
     </IconButton>
   </ButtonGroup>;

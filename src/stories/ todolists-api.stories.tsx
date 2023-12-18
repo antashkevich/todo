@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { todolistAPI } from '../api/ todolist-api';
+import { todolistAPI } from '../api/todolist-api';
 
 export default {
   title: 'API',
@@ -62,8 +62,8 @@ export const UpdateTodolistTitle = () => {
 export const GetTasks = () => {
   const [state, setState] = useState<any>(null);
   useEffect(() => {
-    const todolistId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
-    todolistAPI.getTasks(todolistId)
+    const todoListId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
+    todolistAPI.getTasks(todoListId)
       .then(res => {
         setState(res.data);
       });
@@ -74,9 +74,9 @@ export const GetTasks = () => {
 export const CreateTask = () => {
   const [state, setState] = useState<any>(null);
   useEffect(() => {
-    const todolistId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
+    const todoListId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
     const title = "New asd"
-    todolistAPI.createTask(todolistId, title)
+    todolistAPI.createTask(todoListId, title)
       .then(res => {
         setState(res.data);
       });
@@ -88,17 +88,16 @@ export const CreateTask = () => {
 export const UpdateTask = () => {
   const [state, setState] = useState<any>(null);
   useEffect(() => {
-    const todolistId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
+    const todoListId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
     const taskId = '92faac2a-f365-46c9-8626-19e64d09c97d';
     const title = "New Title Task";
     const description = "New Task description";
     const completed = false;
     const status = 0;
     const priority = 1;
-    todolistAPI.updateTask(todolistId, taskId, {
+    todolistAPI.updateTask(todoListId, taskId, {
       title: title,
       description: description,
-      completed: completed,
       status: status,
       priority: priority,
       startDate: "2023-12-14T10:14:45.3",
@@ -119,9 +118,9 @@ export const UpdateTask = () => {
 export const DeleteTask = () => {
   const [state, setState] = useState<any>(null);
   useEffect(() => {
-    const todolistId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
+    const todoListId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
     const taskId = '3c18379e-d175-47f7-bfd1-ca1c70fb65fa';
-    todolistAPI.deleteTask(todolistId, taskId)
+    todolistAPI.deleteTask(todoListId, taskId)
       .then(res => {
         setState(res.data);
       });

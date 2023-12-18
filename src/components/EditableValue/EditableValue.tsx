@@ -22,7 +22,6 @@ type PropsType = {
 export const EditableValue: FC<PropsType> = React.memo(({ value, isChecked, isEditMode, onChange, setIsEditMode }) => {
   const [title, setTitle] = useState(value);
 
-
   useEffect(() => {
     if (!isEditMode) {
       onChange(title);
