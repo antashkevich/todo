@@ -10,42 +10,51 @@ type PropsType = {
   onChangeTodoTitle: (id: string, title: string) => void;
 };
 
-export const TodolistTitle: FC<PropsType> = React.memo(({ id, value, onChangeTodoTitle, removeTodo }) => {
-  const [isEditMode, setIsEditMode] = useState(false);
+export const TodolistTitle: FC<PropsType> = React.memo(
+  ({ id, value, onChangeTodoTitle, removeTodo }) => {
+    const [isEditMode, setIsEditMode] = useState(false);
 
-  const onChangeTitle = useCallback((value: string) => {
-    onChangeTodoTitle(id, value);
-  }, [id, onChangeTodoTitle]);
+    const onChangeTitle = useCallback(
+      (value: string) => {
+        onChangeTodoTitle(id, value);
+      },
+      [id, onChangeTodoTitle]
+    );
 
-  const onChangeEditMode = () => {
-    setIsEditMode(!isEditMode);
-  }
+    const onChangeEditMode = () => {
+      setIsEditMode(!isEditMode);
+    };
 
-  return <Stack
-    className="todotitle"
-    direction="row"
-    spacing={1}
-    alignItems="center"
-    justifyContent="space-between"
-  >
-    <Stack 
-      flexGrow="1"
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      overflow="hidden">
-      <EditableValue
-        value={value}
-        isEditMode={isEditMode}
-        onChange={onChangeTitle}
-        setIsEditMode={setIsEditMode}
+    return (
+      <Stack
+        className="todotitle"
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Stack
+          flexGrow="1"
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          overflow="hidden"
+        >
+          <EditableValue
+            value={value}
+            isEditMode={isEditMode}
+            onChange={onChangeTitle}
+            setIsEditMode={setIsEditMode}
+          />
+        </Stack>
+
+        <EditionButtons
+          id={id}
+          isEditMode={isEditMode}
+          removeItem={() => removeTodo(id)}
+          onChangeEditMode={onChangeEditMode}
         />
-    </Stack>
-
-    <EditionButtons 
-      id={id}
-      isEditMode={isEditMode}
-      removeItem={() => removeTodo(id)}
-      onChangeEditMode={onChangeEditMode} />
-  </Stack>;
-});
+      </Stack>
+    );
+  }
+);
