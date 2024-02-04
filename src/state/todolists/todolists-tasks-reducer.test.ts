@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { tasksReducer } from "./tasks-reducer";
+import { tasksReducer } from "../tasks/tasks-reducer";
 import { TodolistDomainType, addTodolistAC, removeTodolistAC, setTodolistsAC, todolistsReducer } from "./todolists-reducer";
 
 let todoListId1: string;
@@ -16,14 +16,16 @@ beforeEach(() => {
       title: "HTML",
       filter: "all",
       addedDate: '',
-      order: 0
+      order: 0,
+      entityStatus: "idle"
     },
     {
       id: todoListId2,
       title: "JS",
       filter: "all",
       addedDate: '',
-      order: 0
+      order: 0,
+      entityStatus: "idle"
     },
   ];
 })

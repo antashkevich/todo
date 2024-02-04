@@ -1,10 +1,11 @@
 import React, { ChangeEvent, FC, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { removeTask, updateTask } from "../../state/tasks-reducer";
+import { removeTask, updateTask } from "../../state/tasks/tasks-reducer";
 import { EditableValue } from "../EditableValue";
 import { EditionButtons } from "../EditionButtons";
 import { Checkbox, FormControl, FormControlLabel, Stack } from "@mui/material";
 import { TaskStatuses } from "../../api/todolist-api";
+import { useAppDispatch } from "../../state/store";
+import "./TaskItem.css";
 
 type PropsType = {
   id: string;
@@ -15,7 +16,7 @@ type PropsType = {
 
 export const TaskItem: FC<PropsType> = React.memo(
   ({ id, itemId, isChecked, value }) => {
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
 
     const deleteTask = useCallback((idTodolist: string, idItem: string) => {
       dispatch(removeTask(idTodolist, idItem));
@@ -56,12 +57,13 @@ export const TaskItem: FC<PropsType> = React.memo(
       >
         <FormControl fullWidth>
           <FormControlLabel
+            className="item-label"
             sx={{ m: 0 }}
             control={
               <Checkbox
                 onChange={onChangeStatusHandler}
                 checked={isChecked === 2 ? true : false}
-                className={isChecked ? "isDone" : ""}
+                className="checkbox"
               />
             }
             label={

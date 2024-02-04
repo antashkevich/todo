@@ -12,6 +12,7 @@ const meta: Meta<typeof Todolist> = {
     id: '12wsdewfijdei',
     title: 'JS',
     filter: 'all',
+    demo: true,
     changeFilter: action('Status changed inside Task'),
     removeTodolist: action('Title changed inside Task'),
     changeTodoTitle: action('Remove Button clicked changed inside Task')

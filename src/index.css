@@ -14,3 +14,7 @@ code {
 .isDone {
   opacity: 0.5;
 }
+
+.checkbox.Mui-checked {
+  opacity: 0.5;
+}

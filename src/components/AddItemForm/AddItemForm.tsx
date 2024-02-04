@@ -5,6 +5,7 @@ import "./AddItemForm.css";
 
 type PropsType = {
   addNewItem: (title: string) => void;
+  entityStatus?: string;
 };
 
 export const AddItemForm: FC<PropsType> = React.memo(({ addNewItem }) => {
