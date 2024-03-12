@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { TaskPriorities, TaskStatuses } from "../../api/todolist-api";
+import { TaskDomainType, TaskPriorities, TaskStatuses } from "../../api/todolist-api";
 import {
   addTaskAC,
   removeTaskAC,
@@ -16,6 +16,7 @@ import {
 let todoListId1: string;
 let todoListId2: string;
 let startState: {};
+let tasks: TaskDomainType[];
 
 beforeEach(() => {
   todoListId1 = v1();
@@ -33,6 +34,7 @@ beforeEach(() => {
         todoListId: "todoListId1",
         order: 0,
         addedDate: "",
+        removeTaskStatus: "idle"
       },
       {
         id: "2",
@@ -45,6 +47,7 @@ beforeEach(() => {
         todoListId: "todoListId1",
         order: 0,
         addedDate: "",
+        removeTaskStatus: "idle"
       },
       {
         id: "3",
@@ -57,6 +60,7 @@ beforeEach(() => {
         todoListId: "todoListId1",
         order: 0,
         addedDate: "",
+        removeTaskStatus: "idle"
       },
     ],
     todoListId2: [
@@ -71,6 +75,7 @@ beforeEach(() => {
         todoListId: "todoListId2",
         order: 0,
         addedDate: "",
+        removeTaskStatus: "idle"
       },
       {
         id: "2",
@@ -83,6 +88,7 @@ beforeEach(() => {
         todoListId: "todoListId2",
         order: 0,
         addedDate: "",
+        removeTaskStatus: "idle"
       },
     ],
   };
@@ -196,7 +202,7 @@ test("empry arrays should be added when set todolist", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  const tasks = [
+  tasks = [
     {
       id: "1",
       title: "HTML",
@@ -208,6 +214,7 @@ test("tasks should be added for todolist", () => {
       todoListId: "todoListId1",
       order: 0,
       addedDate: "",
+      removeTaskStatus: "idle"
     },
     {
       id: "2",
@@ -220,6 +227,7 @@ test("tasks should be added for todolist", () => {
       todoListId: "todoListId1",
       order: 0,
       addedDate: "",
+      removeTaskStatus: "idle"
     },
     {
       id: "3",
@@ -232,6 +240,7 @@ test("tasks should be added for todolist", () => {
       todoListId: "todoListId1",
       order: 0,
       addedDate: "",
+      removeTaskStatus: "idle"
     },
   ];
   const action = setTaskAC(tasks, todoListId1);

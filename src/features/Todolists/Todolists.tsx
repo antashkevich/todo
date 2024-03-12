@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { AppRootState, useAppDispatch } from "../../state/store";
+import { useAppDispatch, useAppSelector } from "../../state/store";
 import {
   FilterValuesType,
   TodolistDomainType,
@@ -8,18 +7,19 @@ import {
   removeTodolist,
   changeTodolistFilterAC,
   changeTodolistTitle,
-  addTodolist
+  addTodolist,
 } from "../../state/todolists/todolists-reducer";
 import { Todolist } from "../../components/Todolist";
 import { AddItemForm } from "../../components/AddItemForm";
 import { Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import { RequestStatusType } from "../../state/app/app-reducer";
 
 type PropsType = {
   demo?: boolean;
-}
+};
 
-export const Todolists: FC<PropsType> = ({demo = false}) => {
+export const Todolists: FC<PropsType> = ({ demo = false }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -28,8 +28,12 @@ export const Todolists: FC<PropsType> = ({demo = false}) => {
     dispatch(fetchTodolists());
   }, []);
 
-  const todoListsFromState = useSelector<AppRootState, TodolistDomainType[]>(
+  const todoListsFromState = useAppSelector<TodolistDomainType[]>(
     state => state.todolists
+  );
+
+  const todoListAddStatus = useAppSelector<RequestStatusType>(
+    state => state.app.status
   );
 
   const addNewTodolist = useCallback(
@@ -60,15 +64,19 @@ export const Todolists: FC<PropsType> = ({demo = false}) => {
     [dispatch]
   );
 
-  return <Grid container spacing={4} mt={0}>
+  return (
+    <Grid container spacing={4} mt={0}>
       <Grid container justifyContent="center" xs={12}>
-        <AddItemForm addNewItem={addNewTodolist} />
+        <AddItemForm
+          addNewItem={addNewTodolist}
+          entityStatus={todoListAddStatus}
+        />
       </Grid>
       <Grid container rowSpacing={4} columnSpacing={4} xs={12}>
         {todoListsFromState?.map(todo => {
           return (
             <Grid xs={4} key={todo.id}>
-              <Paper elevation={3}>
+              <Paper elevation={3} sx={{ overflow: "hidden", borderRadius: "24px" }}>
                 <Todolist
                   key={todo.id}
                   id={todo.id}
@@ -76,6 +84,7 @@ export const Todolists: FC<PropsType> = ({demo = false}) => {
                   demo={demo}
                   changeFilter={changeFilter}
                   entityStatus={todo.entityStatus}
+                  entityStatusAddTask={todo.entityStatusAddTask}
                   removeTodolist={deleteTodolist}
                   filter={todo.filter}
                   changeTodoTitle={changeTodoListTitle}
@@ -86,4 +95,5 @@ export const Todolists: FC<PropsType> = ({demo = false}) => {
         })}
       </Grid>
     </Grid>
+  );
 };

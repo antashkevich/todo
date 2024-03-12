@@ -6,16 +6,18 @@ import { Checkbox, FormControl, FormControlLabel, Stack } from "@mui/material";
 import { TaskStatuses } from "../../api/todolist-api";
 import { useAppDispatch } from "../../state/store";
 import "./TaskItem.css";
+import { RequestStatusType } from "../../state/app/app-reducer";
 
 type PropsType = {
   id: string;
   itemId: string;
   isChecked: number;
   value: string;
+  removeTaskStatus: RequestStatusType;
 };
 
 export const TaskItem: FC<PropsType> = React.memo(
-  ({ id, itemId, isChecked, value }) => {
+  ({ id, itemId, isChecked, value, removeTaskStatus }) => {
     const dispatch = useAppDispatch();
 
     const deleteTask = useCallback((idTodolist: string, idItem: string) => {
@@ -54,6 +56,9 @@ export const TaskItem: FC<PropsType> = React.memo(
         direction="row"
         spacing={1}
         sx={{ maxWidth: "100%" }}
+        className={`item-container ${
+          removeTaskStatus === "loading" && "disabled"
+        }`}
       >
         <FormControl fullWidth>
           <FormControlLabel

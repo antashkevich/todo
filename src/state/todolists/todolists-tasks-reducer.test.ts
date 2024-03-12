@@ -17,7 +17,8 @@ beforeEach(() => {
       filter: "all",
       addedDate: '',
       order: 0,
-      entityStatus: "idle"
+      entityStatus: "idle",
+      entityStatusAddTask: "idle"
     },
     {
       id: todoListId2,
@@ -25,7 +26,8 @@ beforeEach(() => {
       filter: "all",
       addedDate: '',
       order: 0,
-      entityStatus: "idle"
+      entityStatus: "idle",
+      entityStatusAddTask: "idle"
     },
   ];
 })

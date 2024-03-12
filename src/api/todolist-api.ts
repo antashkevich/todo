@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { RequestStatusType } from '../state/app/app-reducer';
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -83,13 +84,17 @@ export type TaskType = {
   id: string,
   todoListId: string,
   order: number,
-  addedDate: string
+  addedDate: string,
 }
+
+export type TaskDomainType = TaskType & {
+  removeTaskStatus: RequestStatusType
+};
 
 export type TasksType = {
   error: string | null,
   totalCount: number,
-  items: TaskType[]
+  items: TaskDomainType[]
 }
 
 export type TaskUpdateType = {

@@ -1,3 +1,8 @@
+.addItemForm.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .addItemForm .addItemForm-input .MuiInputBase-fullWidth {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;

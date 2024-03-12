@@ -1,17 +1,13 @@
 import * as React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { useSelector } from "react-redux";
-import { AppRootState } from "../../state/store";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../state/store";
 import { setErrorAC } from "../../state/app/app-reducer";
 
 export const ErrorSnackBar = () => {
-  const error = useSelector<AppRootState, string | null>(
-    state => state.app.error
-  );
+  const error = useAppSelector<string | null>(state => state.app.error);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const isOpenError = error !== null;
 
@@ -22,8 +18,8 @@ export const ErrorSnackBar = () => {
     if (reason === "clickaway") {
       return;
     }
-    
-    dispatch(setErrorAC(null))
+
+    dispatch(setErrorAC(null));
   };
 
   return (

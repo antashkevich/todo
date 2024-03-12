@@ -20,8 +20,8 @@ const todoListId2 = v1();
 
 const initialGlobalState: AppRootState = {
   todolists: [
-    { id: todoListId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle" },
-    { id: todoListId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle" }
+    { id: todoListId1, title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: "idle", entityStatusAddTask: "idle" },
+    { id: todoListId2, title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: "idle", entityStatusAddTask: "idle" }
   ],
   tasks: {
     "todoListId1": [
@@ -35,7 +35,8 @@ const initialGlobalState: AppRootState = {
         id: v1(),
         todoListId: todoListId1,
         order: 0,
-        addedDate: ''
+        addedDate: '',
+        removeTaskStatus: "idle"
       },
       {
         description: '',
@@ -47,7 +48,8 @@ const initialGlobalState: AppRootState = {
         id: v1(),
         todoListId: todoListId1,
         order: 0,
-        addedDate: ''
+        addedDate: '',
+        removeTaskStatus: "idle"
       },
     ],
     "todoListId2": [
@@ -61,7 +63,8 @@ const initialGlobalState: AppRootState = {
         id: v1(),
         todoListId: todoListId2,
         order: 0,
-        addedDate: ''
+        addedDate: '',
+        removeTaskStatus: "idle"
       },
       {
         description: '',
@@ -73,7 +76,8 @@ const initialGlobalState: AppRootState = {
         id: v1(),
         todoListId: todoListId2,
         order: 0,
-        addedDate: ''
+        addedDate: '',
+        removeTaskStatus: "idle"
       },
     ],
   },

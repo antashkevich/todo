@@ -1,20 +1,23 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { AppRootState, useAppDispatch } from "../../state/store";
+import React, { FC, useCallback, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../state/store";
 import { addTask, fetchTasks } from "../../state/tasks/tasks-reducer";
 import { AddItemForm } from "../AddItemForm";
 import { TaskItem } from "../TaskItem";
 import { TodolistTitle } from "../TodolistTitle";
 import { Box, Button, ButtonGroup, List, ListItem, Stack } from "@mui/material";
-import { TaskType } from "../../api/todolist-api";
+import LinearProgress from "@mui/joy/LinearProgress";
+import { TaskDomainType } from "../../api/todolist-api";
 import { FilterValuesType } from "../../state/todolists/todolists-reducer";
 import "./Todolist.css";
+import { RequestStatusType } from "../../state/app/app-reducer";
+import { useDrop } from "react-dnd";
 
 type PropsType = {
   id: string;
   title: string;
   filter: FilterValuesType;
-  entityStatus: string;
+  entityStatus: RequestStatusType;
+  entityStatusAddTask: RequestStatusType;
   demo?: boolean;
   changeFilter: (todoListId: string, value: FilterValuesType) => void;
   removeTodolist: (todoListId: string) => void;
@@ -27,6 +30,7 @@ export const Todolist: FC<PropsType> = React.memo(
     title,
     filter,
     entityStatus,
+    entityStatusAddTask,
     demo = false,
     changeFilter,
     removeTodolist,
@@ -40,9 +44,7 @@ export const Todolist: FC<PropsType> = React.memo(
       dispatch(fetchTasks(id));
     }, []);
 
-    const tasks = useSelector<AppRootState, TaskType[]>(
-      state => state.tasks[id]
-    );
+    const tasks = useAppSelector<TaskDomainType[]>(state => state.tasks[id]);
 
     const addNewTask = useCallback(
       (newTitle: string) => {
@@ -54,21 +56,31 @@ export const Todolist: FC<PropsType> = React.memo(
     const onChangeFilter = (value: FilterValuesType, id: string) =>
       changeFilter(id, value);
 
-    let taskForTodolist = tasks;
+    let tasksForTodolist = tasks;
 
     if (filter === "active") {
-      taskForTodolist = taskForTodolist.filter(task => task.status === 0);
+      tasksForTodolist = tasksForTodolist.filter(task => task.status === 0);
     }
 
     if (filter === "completed") {
-      taskForTodolist = taskForTodolist.filter(task => task.status === 2);
+      tasksForTodolist = tasksForTodolist.filter(task => task.status === 2);
     }
 
     return (
-      <Stack
-        className={`todolist ${(entityStatus === "loading") && "disabled"}`}
-      >
+      <Stack className={`todolist ${entityStatus === "loading" && "disabled"}`}>
         <Box sx={{ p: 3 }}>
+          {entityStatusAddTask === "loading"  && (
+              <LinearProgress
+                variant="plain"
+                size="sm"
+                sx={{
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                  width: "100%",
+                }}
+              />
+            )}
           <TodolistTitle
             id={id}
             value={title}
@@ -76,16 +88,20 @@ export const Todolist: FC<PropsType> = React.memo(
             removeTodo={removeTodolist}
           />
 
-          <AddItemForm addNewItem={addNewTask} />
+          <AddItemForm
+            addNewItem={addNewTask}
+            entityStatus={entityStatusAddTask}
+          />
 
           <List sx={{ pt: 2, pb: 2 }}>
-            {taskForTodolist?.map(item => (
+            {tasksForTodolist?.map(item => (
               <ListItem sx={{ pt: 0.5, pb: 0.5 }} disableGutters key={item.id}>
                 <TaskItem
                   id={id}
                   itemId={item.id}
                   isChecked={item.status}
                   value={item.title}
+                  removeTaskStatus={item.removeTaskStatus}
                 />
               </ListItem>
             ))}

@@ -1,3 +1,8 @@
 .item-label .MuiFormControlLabel-label {
   overflow: hidden;
 }
+
+.item-container.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
