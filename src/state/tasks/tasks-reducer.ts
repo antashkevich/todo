@@ -13,7 +13,7 @@ import {
   TaskUpdateType,
   todolistAPI,
 } from "../../api/todolist-api";
-import { Dispatch } from "redux";
+import { AnyAction, Dispatch } from "redux";
 import { AppRootState } from "../store";
 import {
   RequestStatusType,
@@ -25,6 +25,8 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyARecord } from "dns";
 
 const initialState: TasksStateType = {};
 
@@ -209,6 +211,16 @@ export const updateTask =
       .catch(error => {
         handleServerNetworkError(error, dispatch);
       });
+  };
+
+export const reorderTasks =
+  (todoListId: string, taskId: string, putAfterItemId: string) =>
+  (dispatch: ThunkDispatch<AppRootState, unknown, AnyAction>) => {
+    dispatch(changeAddTaskEntityStatusAC(todoListId, "loading"));
+    todolistAPI.reorderTask(todoListId, taskId, putAfterItemId).then(res => {
+      dispatch(fetchTasks(todoListId))
+      dispatch(changeAddTaskEntityStatusAC(todoListId, "succeeded"));
+    });
   };
 
 // types

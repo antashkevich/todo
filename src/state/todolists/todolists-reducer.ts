@@ -130,7 +130,11 @@ export const changeTodolistTitle =
   };
 
 // types
-export type FilterValuesType = "all" | "active" | "completed";
+export const ALL_FILTER_VALUES = ["all", "active", "completed"] as const;
+type FilterValuesReadOnlyType = typeof ALL_FILTER_VALUES;
+export type FilterValuesType = FilterValuesReadOnlyType[number]; 
+
+export type SizeFilterButtonType = "small" | "medium" | "large" | undefined
 
 export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType;
