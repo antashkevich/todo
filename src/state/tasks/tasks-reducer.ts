@@ -1,6 +1,7 @@
 import {
   ActionsTodolistType,
   AddTodolistActionType,
+  ClearTodolistDataActionType,
   RemoveTodolistActionType,
   SetTodolistsActionType,
   changeAddTaskEntityStatusAC
@@ -93,6 +94,9 @@ export const tasksReducer = (
       delete copyState[action.id];
       return copyState;
     }
+
+    case "TODOLISTS/CLEAR-TODOLIST-DATA":
+      return {};
 
     default:
       return state;
@@ -224,15 +228,18 @@ export const reorderTasks =
   };
 
 // types
+export type SetTasksActionType = ReturnType<typeof setTaskAC>
+
 type ActionsType =
-  | ReturnType<typeof setTaskAC>
+  | SetTasksActionType
   | ReturnType<typeof addTaskAC>
   | ReturnType<typeof removeTaskAC>
   | ReturnType<typeof updateTaskAC>
   | ReturnType<typeof changeTaskEntityStatusAC>
   | AddTodolistActionType
   | RemoveTodolistActionType
-  | SetTodolistsActionType;
+  | SetTodolistsActionType
+  | ClearTodolistDataActionType;
 
 type TasksStateType = {
   [key: string]: TaskDomainType[];

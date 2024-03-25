@@ -1,10 +1,13 @@
 import { TodolistType, todolistAPI } from "../../api/todolist-api";
-import { Dispatch } from "redux";
+import { AnyAction, Dispatch } from "redux";
 import {
   RequestStatusType,
   SetStatusActionType,
   setStatusAC,
 } from "../app/app-reducer";
+import { fetchTasks } from "../tasks/tasks-reducer";
+import { ThunkDispatch } from "redux-thunk";
+import { AppRootState } from "../store";
 
 const initialState: TodolistDomainType[] = [];
 
@@ -63,6 +66,9 @@ export const todolistsReducer = (
           : todolist
       );
 
+    case "TODOLISTS/CLEAR-TODOLIST-DATA":
+      return [];
+
     default:
       return state;
   }
@@ -90,14 +96,24 @@ export const changeTodolistEntityStatusAC = (id: string, status: RequestStatusTy
 export const changeAddTaskEntityStatusAC = (id: string, status: RequestStatusType) =>
   ({ type: "TODOLISTS/CHANGE-ADD-TASK-ENTITY-STATUS", id, status } as const);
 
+export const clearTodolistDataAC = () =>
+  ({ type: "TODOLISTS/CLEAR-TODOLIST-DATA"} as const);
+
 // thunks
 export const fetchTodolists =
-  () => (dispatch: Dispatch<ActionsTodolistType | SetStatusActionType>) => {
+  () => (dispatch: ThunkDispatch<AppRootState, unknown, AnyAction>) => {
     dispatch(setStatusAC("loading"));
-    todolistAPI.getTodolists().then(res => {
-      dispatch(setTodolistsAC(res.data));
-      dispatch(setStatusAC("succeeded"));
-    });
+    todolistAPI.getTodolists()
+      .then(res => {
+        dispatch(setTodolistsAC(res.data));
+        dispatch(setStatusAC("succeeded"));
+        return res.data
+      })
+      .then(todolists => {
+        todolists.forEach(todolist => {
+          dispatch(fetchTasks(todolist.id))
+        })
+      })
   };
 
 export const addTodolist =
@@ -148,10 +164,13 @@ export type AddTodolistActionType = ReturnType<typeof addTodolistAC>;
 
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>;
 
+export type ClearTodolistDataActionType = ReturnType<typeof clearTodolistDataAC>;
+
 export type ActionsTodolistType =
   | AddTodolistActionType
   | RemoveTodolistActionType
   | SetTodolistsActionType
+  | ClearTodolistDataActionType
   | ReturnType<typeof changeTodolistTitleAC>
   | ReturnType<typeof changeTodolistFilterAC>
   | ReturnType<typeof changeTodolistEntityStatusAC>

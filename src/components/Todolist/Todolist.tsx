@@ -32,12 +32,6 @@ export const Todolist: FC<PropsType> = React.memo(
   }) => {
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-      if (demo) return;
-
-      dispatch(fetchTasks(id));
-    }, []);
-
     const tasks = useAppSelector<TaskDomainType[]>(state => state.tasks[id]);
 
     const deleteTodolist = useCallback(
